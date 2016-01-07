@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:showIn="@layout/activity_building_details" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.activity.adam.locationfinder.BuildingDetails">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:textColor="@color/black"
+        android:maxLines = "6"
+        android:scrollbars = "vertical"
+        android:padding="10dp"
+        android:id="@+id/description"
+        android:background="@color/coloralt"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_alignParentLeft="true"
+        android:id="@+id/Name"
+        android:text="Name"
+        android:layout_margin="@dimen/text_margin"  />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/description"
+        android:layout_alignParentRight="true"
+        android:text="Abbrivation"
+        android:id="@+id/Abbrivation"
+        android:layout_margin="@dimen/text_margin"/>
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_margin="10dp"
+        android:id="@+id/line"
+        android:layout_height="3dp"
+        android:layout_below="@id/Name"
+        android:background="@color/colorAccent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:text="Type"
+        android:id="@+id/Type"
+        android:layout_margin="@dimen/text_margin"
+        android:layout_below="@id/line"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line"
+        android:gravity="right"
+        android:layout_alignParentRight="true"
+        android:text="Opening Times"
+        android:id="@+id/OpeningTimes"
+        android:layout_margin="@dimen/text_margin"/>
+
+
+</RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>

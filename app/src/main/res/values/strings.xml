@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">LocationFinder</string>
+    <string name="action_settings">Settings</string>
+    <string name="detail_id">banter</string>
+    <string name="title_activity_building_details">BuildingDetails</string>
+    <item name="seachbar" type="id"/>
+    <string name="title_activity_maps">Map</string>
+</resources>
