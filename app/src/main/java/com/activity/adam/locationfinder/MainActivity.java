@@ -36,14 +36,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import framework.implementation.Database;
+import framework.implementation.MapData;
+
 public class MainActivity extends AppCompatActivity implements  Serializable {
-    ListView msgList;
-    public static Database db;
-    CustomAdapter adapter;
-    ArrayList<MapData> data;
-    EditText search;
+    ListView locationList; // list of locations
+    public static Database db; //database to get the mapdata
+    CustomAdapter adapter; //custom listview
+    ArrayList<MapData> data; //the data of all the locations
+    EditText search; //search input
     AdapterView.AdapterContextMenuInfo info;
-    private RelativeLayout layout;
+    private RelativeLayout layout; //used for adding search input
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,39 +56,33 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
         setSupportActionBar(toolbar);
         layout = (RelativeLayout) findViewById(R.id.searchlayout);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        AssetManager am = getAssets();
-        db = new Database(am);
+
+
+        //pass the assest file to database and get the location Data
+        db = new Database(this,"uea-map-data.tsv");
         data = db.getData();
 
-
-        msgList = (ListView) findViewById(R.id.locations);
+        //setup the listview and adapter
+        locationList = (ListView) findViewById(R.id.locations);
         adapter = new CustomAdapter(db.getData(),this);
-        msgList.setAdapter(adapter);
+        locationList.setAdapter(adapter);
 
-
-       msgList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //create on click for list view
+       locationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                Intent intent = new Intent(MainActivity.this, BuildingDetails.class);
-               if(CustomAdapter.getFilteredData() !=null) {
+               if (CustomAdapter.getFilteredData() != null) {
                    MapData d = CustomAdapter.getFilteredData().get(position);
                    //check if the list was filtered to pass the right position in data
-                   for(int i =0; i<data.size();i++)
-                   {
-                       if(d.getName().equals(data.get(i).getName()))
-                       {
+                   for (int i = 0; i < data.size(); i++) {
+                       if (d.getName().equals(data.get(i).getName())) {
                            position = i;
                        }
                    }
                }
+               //pass position to next class to get the right MapData
                intent.putExtra("position", position);
                startActivity(intent);
 
@@ -104,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
         return true;
     }
 
+
+    //tool bar at the top creates the on click for each button
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -117,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
         }
         if(id == R.id.search)
         {
-            //adds a textvie dynamically
+            //adds a textview dynamically
             RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(
                     LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if(search == null) {
@@ -131,9 +130,9 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
             }
 
             //changes the listview position as search bar is added
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)msgList.getLayoutParams();
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)locationList.getLayoutParams();
             params.addRule(RelativeLayout.BELOW,R.id.seachbar);
-            msgList.setLayoutParams(params);
+            locationList.setLayoutParams(params);
 
             //set focus on search bar and open keyboard
             search.requestFocus();

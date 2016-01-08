@@ -16,27 +16,27 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import framework.implementation.MapData;
+
 public class BuildingDetails extends AppCompatActivity {
     TextView description,name,abbr,type,opentimes;
     FloatingActionButton mapview;
     int position;
-
+    ArrayList<MapData> md;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ArrayList<MapData> md;
-      //  if(CustomAdapter.getFilteredData()==null) {
-            md= MainActivity.db.getData();
-     //   }else{
 
+        //get the map data
+        md= MainActivity.db.getData();
 
-     //   }
         super.onCreate(savedInstanceState);
         Intent in = getIntent();
-        //position of listview clicked
+        //get the position to get right item in mapdata array
         position = in.getIntExtra("position",0);//gets name from intent
 
+        //set up all the different textview and buttons etc
         setContentView(R.layout.activity_building_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_action_back);
@@ -47,7 +47,7 @@ public class BuildingDetails extends AppCompatActivity {
         type = (TextView) findViewById(R.id.Type);
         opentimes = (TextView) findViewById(R.id.OpeningTimes);
         mapview = (FloatingActionButton) findViewById(R.id.fab);
-        //set the title
+        //set the title check if its null
         if(md.get(position).getAbbr().contains("null"))
         {
 
@@ -55,8 +55,10 @@ public class BuildingDetails extends AppCompatActivity {
 
         }
         else {
+            //display the abbriviation instead
             setTitle(md.get(position).getAbbr());
         }
+        //set all the text and formatting
         description.setText(Html.fromHtml(md.get(position).getDescription()));
         //makes hyperlinks clickable
         description.setMovementMethod(LinkMovementMethod.getInstance());
@@ -66,6 +68,7 @@ public class BuildingDetails extends AppCompatActivity {
         type.setText(Html.fromHtml("<b>" + "Type" + "</b>" + "<br/>" + md.get(position).getType()));
         opentimes.setText(Html.fromHtml("<b> "+"Opening Times"+"</b>"+"<br/>"+md.get(position).getOpeningTimes()));
 
+        //user clicks the mapview button
         mapview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -14,10 +14,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import framework.implementation.MapData;
+
 /**
  * Created by adam on 07-Nov-15.
  */
-class CustomAdapter extends BaseAdapter implements Filterable{
+class CustomAdapter extends BaseAdapter implements framework.CustomAdapter{
 
     private ArrayList<MapData> _data;
     Context _c;
