@@ -41,8 +41,8 @@ public class Splash extends Activity {
         layout.setLayoutParams(vp);
         layout.setBackgroundColor(Color.parseColor("#303F9F"));
 
-        vp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-        vp.topMargin = 450;
+        vp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
+       // vp.topMargin = 450;
         iv.setLayoutParams(vp);
         vp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         vp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
