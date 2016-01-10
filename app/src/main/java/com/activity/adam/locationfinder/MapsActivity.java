@@ -45,10 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     ImageButton back;
     CheckBox showall;
     CampusMap campusMap;
-
-
-
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +68,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
-
-
-
-
-
     }
 
 

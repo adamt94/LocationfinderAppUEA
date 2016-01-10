@@ -1,6 +1,8 @@
 package com.activity.adam.locationfinder;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -41,7 +43,7 @@ import framework.implementation.AndroidApp;
 import framework.implementation.Database;
 import framework.implementation.MapData;
 
-public class MainActivity extends AppCompatActivity implements  Serializable {
+public class MainActivity extends AppCompatActivity implements Serializable {
     ListView locationList; // list of locations
     public static AndroidApp app;
     public static Database db; //database to get the mapdata
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
     EditText search; //search input
     AdapterView.AdapterContextMenuInfo info;
     private RelativeLayout layout; //used for adding search input
+
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,44 +69,64 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
 
 
         //pass the assest file to database and get the location Data
-        db = new Database(this,"uea-map-data.tsv");
+        db = new Database(this, "uea-map-data.tsv");
         data = db.getData();
 
         //setup the listview and adapter
         locationList = (ListView) findViewById(R.id.locations);
-        adapter = new CustomAdapter(db.getData(),this);
+        adapter = new CustomAdapter(db.getData(), this);
         locationList.setAdapter(adapter);
 
         //create on click for list view
-       locationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-           @Override
-           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        locationList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-               Intent intent = new Intent(MainActivity.this, BuildingDetails.class);
-               if (CustomAdapter.getFilteredData() != null) {
-                   MapData d = CustomAdapter.getFilteredData().get(position);
-                   //check if the list was filtered to pass the right position in data
-                   for (int i = 0; i < data.size(); i++) {
-                       if (d.getName().equals(data.get(i).getName())) {
-                           position = i;
-                       }
-                   }
-               }
-               //pass position to next class to get the right MapData
-               intent.putExtra("position", position);
-               startActivity(intent);
+                Intent intent = new Intent(MainActivity.this, BuildingDetails.class);
+                if (CustomAdapter.getFilteredData() != null) {
+                    MapData d = CustomAdapter.getFilteredData().get(position);
+                    //check if the list was filtered to pass the right position in data
+                    for (int i = 0; i < data.size(); i++) {
+                        if (d.getName().equals(data.get(i).getName())) {
+                            position = i;
+                        }
+                    }
+                }
+                //pass position to next class to get the right MapData
+                intent.putExtra("position", position);
+                startActivity(intent);
 
 
-           }
-       });
+            }
+        });
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MapData md = new MapData("MyLocation","My Location",app.getGPS().getLocation().getLongitude(),app.getGPS().getLocation().getLatitude(),"loc","null","Users Saved Location","ml","null","null");
-                data.add(0,md);
-                adapter.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, "Your Location has been saved",
-                        Toast.LENGTH_LONG).show();
+                final AlertDialog.Builder inputAlert = new AlertDialog.Builder(context);
+                inputAlert.setTitle("Add your location to the list");
+                final EditText locationName = new EditText(context);
+                locationName.setHint("Location Name");
+                inputAlert.setView(locationName);
+                inputAlert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String userLocationName = locationName.getText().toString();
+                        MapData md = new MapData("Custom Location", userLocationName, app.getGPS().getLocation().getLongitude(), app.getGPS().getLocation().getLatitude(), "loc", "null", "Custom Location - No Description", "null", "null", "null");
+                        data.add(0, md);
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(MainActivity.this, "Your Location has been saved",
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
+                inputAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = inputAlert.create();
+                alertDialog.show();
+
             }
         });
 
@@ -130,12 +154,11 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
         if (id == R.id.action_settings) {
             return true;
         }
-        if(id == R.id.search)
-        {
+        if (id == R.id.search) {
             //adds a textview dynamically
             RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(
                     LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            if(search == null) {
+            if (search == null) {
                 search = new EditText(this);
 
                 search.setLayoutParams(lparams);
@@ -146,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
             }
 
             //changes the listview position as search bar is added
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)locationList.getLayoutParams();
-            params.addRule(RelativeLayout.BELOW,R.id.seachbar);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) locationList.getLayoutParams();
+            params.addRule(RelativeLayout.BELOW, R.id.seachbar);
             locationList.setLayoutParams(params);
 
             //set focus on search bar and open keyboard
@@ -164,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    System.out.println("Text ["+s+"]");
+                    System.out.println("Text [" + s + "]");
                     adapter.getFilter().filter(s.toString());
                 }
 

@@ -47,26 +47,36 @@ public class BuildingDetails extends AppCompatActivity {
         type = (TextView) findViewById(R.id.Type);
         opentimes = (TextView) findViewById(R.id.OpeningTimes);
         mapview = (FloatingActionButton) findViewById(R.id.fab);
-        //set the title check if its null
-        if(md.get(position).getAbbr().contains("null"))
-        {
+        //set the title
+        setTitle(md.get(position).getName());
 
-            setTitle( md.get(position).getName());
 
+        if (!md.get(position).getDescription().contains("null")){
+            //set all the text and formatting
+            description.setText(Html.fromHtml(md.get(position).getDescription()));
+            //makes hyperlinks clickable
+            description.setMovementMethod(LinkMovementMethod.getInstance());
+        }else{
+            description.setText("This location does not have a description");
         }
-        else {
-            //display the abbriviation instead
-            setTitle(md.get(position).getAbbr());
-        }
-        //set all the text and formatting
-        description.setText(Html.fromHtml(md.get(position).getDescription()));
-        //makes hyperlinks clickable
-        description.setMovementMethod(LinkMovementMethod.getInstance());
 
-        abbr.setText(Html.fromHtml("<b>" + "Abbreviation" + "</b>" + "<br/>" + md.get(position).getAbbr()));
-        name.setText(Html.fromHtml("<b>" + "Name" + "</b>" + "<br/>" + md.get(position).getName()));
+        if (!md.get(position).getAbbr().contains("null")){
+            abbr.setText(Html.fromHtml("<b>" + "Abbreviation" + "</b>" + "<br/>" + md.get(position).getAbbr()));
+        }else{
+            abbr.setVisibility(View.GONE);
+        }
+        if (!md.get(position).getName().contains("null")){
+            name.setText(Html.fromHtml("<b>" + "Name" + "</b>" + "<br/>" + md.get(position).getName()));
+        }else{
+            name.setVisibility(View.GONE);
+        }
+        if (!md.get(position).getOpeningTimes().contains("null")){
+            opentimes.setText(Html.fromHtml("<b> "+"Opening Times"+"</b>"+"<br/>"+md.get(position).getOpeningTimes()));
+        }else{
+            opentimes.setVisibility(View.GONE);
+        }
+
         type.setText(Html.fromHtml("<b>" + "Type" + "</b>" + "<br/>" + md.get(position).getType()));
-        opentimes.setText(Html.fromHtml("<b> "+"Opening Times"+"</b>"+"<br/>"+md.get(position).getOpeningTimes()));
 
         //user clicks the mapview button
         mapview.setOnClickListener(new View.OnClickListener() {
