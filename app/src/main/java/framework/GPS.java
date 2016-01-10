@@ -7,11 +7,9 @@ import android.location.Location;
  */
 public interface GPS{
 
-    public void onLocationChanged();
-
     public Location getLocation();
 
-    public double getLongitude();
+    public void enableLocation();
 
-    public double getLatitude();
+    public void disableLocation();
 }

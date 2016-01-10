@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.widget.Toast;
 
 import framework.GPS;
 
@@ -16,66 +17,70 @@ import framework.GPS;
  * Created by BEN on 17/12/2015.
  */
 public class AndroidGPS implements GPS {
-    private boolean isGPSEnabled = false;
-    private boolean isNetworkEnabled = false;
+    private boolean GPS = false;
     private LocationManager locationManager;
-    private LocationListener locationListener;
-    private Location location;
-    private double latitude;
-    private double longitude;
+    private AndroidLocationListener locationListener;
+    private Activity activity;
 
     public AndroidGPS(Activity activity) {
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-
-        // Define a listener that responds to location updates
-        locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                // called when the listener is notified with a location update from the GPS
-
-            }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-
-            public void onProviderEnabled(String provider) {
-            }
-
-            public void onProviderDisabled(String provider) {
-            }
-        };
-
-        // Register the listener with the Location Manager to receive location updates
-        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-        }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-        getLocation();
+        this.activity = activity;
     }
 
-    @Override
-    public void onLocationChanged() {
+    private class AndroidLocationListener implements LocationListener {
 
+        Location myLocation;
+
+        @Override
+        public void onLocationChanged(Location location) {
+            myLocation = location;
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+        }
     }
 
     @Override
     public Location getLocation() {
-        return location;
+
+        return locationListener.myLocation;
     }
 
     @Override
-    public double getLongitude() {
-        return latitude;
+    public void enableLocation() {
+        GPS = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if (GPS) {
+            if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(activity, "Permission Not Granted", Toast.LENGTH_SHORT).show();
+            } else {
+                locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+            }
+        } else {
+            Toast.makeText(activity, "GPS unavailable", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
-    public double getLatitude() {
-        return longitude;
+    public void disableLocation() {
+        GPS = false;
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(activity, "Permission Not Granted", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            locationManager.removeUpdates(locationListener);
+        }
     }
+
+
 }

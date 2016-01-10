@@ -37,11 +37,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import framework.implementation.AndroidApp;
 import framework.implementation.Database;
 import framework.implementation.MapData;
 
 public class MainActivity extends AppCompatActivity implements  Serializable {
     ListView locationList; // list of locations
+    public static AndroidApp app;
     public static Database db; //database to get the mapdata
     CustomAdapter adapter; //custom listview
     ArrayList<MapData> data; //the data of all the locations
@@ -57,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
         setSupportActionBar(toolbar);
         layout = (RelativeLayout) findViewById(R.id.searchlayout);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
+        app = new AndroidApp(this);
+        //enable gps
+        app.getGPS().enableLocation();
 
 
         //pass the assest file to database and get the location Data
@@ -94,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MapData md = new MapData("MyLocation","My Location",0.0,0.0,"loc","null","Users Saved Location","ml","null","null");
+                MapData md = new MapData("MyLocation","My Location",app.getGPS().getLocation().getLongitude(),app.getGPS().getLocation().getLatitude(),"loc","null","Users Saved Location","ml","null","null");
                 data.add(0,md);
                 adapter.notifyDataSetChanged();
                 Toast.makeText(MainActivity.this, "Your Location has been saved",
