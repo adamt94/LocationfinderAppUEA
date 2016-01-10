@@ -9,7 +9,7 @@
         android:title="Search"
         app:showAsAction="always"/>
     <item android:id="@+id/action_search"
-        android:icon="@drawable/uealogo"
+        android:icon="@drawable/uealogoalt"
         android:orderInCategory="98"
         android:title="Logo"
         app:showAsAction="always"

@@ -15,7 +15,6 @@ import android.preference.PreferenceManager;
 
 import framework.FileIO;
 
-
 public class AndroidFileIO implements FileIO {
     Context context;
     AssetManager assets;

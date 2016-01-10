@@ -4,11 +4,8 @@ package framework;
  * Created by Callum on 30/10/2015.
  */
 
-
-import android.app.Activity;
-
 import framework.implementation.AndroidAudio;
-
+import android.app.Activity;
 public class SoundResource {
 
     private Audio MyAudio;

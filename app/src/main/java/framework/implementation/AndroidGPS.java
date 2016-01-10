@@ -12,7 +12,6 @@ import android.support.v4.app.ActivityCompat;
 
 import framework.GPS;
 
-
 /**
  * Created by BEN on 17/12/2015.
  */
@@ -32,6 +31,8 @@ public class AndroidGPS implements GPS {
         // Define a listener that responds to location updates
         locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
+                // called when the listener is notified with a location update from the GPS
+
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -65,16 +66,16 @@ public class AndroidGPS implements GPS {
 
     @Override
     public Location getLocation() {
-        return null;
+        return location;
     }
 
     @Override
     public double getLongitude() {
-        return 0;
+        return latitude;
     }
 
     @Override
     public double getLatitude() {
-        return 0;
+        return longitude;
     }
 }

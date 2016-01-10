@@ -16,7 +16,6 @@ import android.graphics.Rect;
 import framework.Graphics;
 import framework.Image;
 
-
 public class AndroidGraphics implements Graphics {
     AssetManager assets;
     Bitmap frameBuffer;

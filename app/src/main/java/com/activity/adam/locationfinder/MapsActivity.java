@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,6 +33,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import framework.implementation.AndroidGPS;
+import framework.implementation.CampusMap;
 import framework.implementation.MapData;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -41,6 +44,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     int position;
     ImageButton back;
     CheckBox showall;
+    CampusMap campusMap;
+
 
 
 
@@ -49,6 +54,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         data = MainActivity.db.getData();
+        campusMap = new CampusMap();
+
         Intent in = getIntent();
         position = in.getIntExtra("position", 0);//gets name from intent
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -64,6 +71,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 finish();
             }
         });
+
+
+
 
 
     }
@@ -86,57 +96,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Add a marker in Sydney and move the camera
         final LatLng building = new LatLng(data.get(position).getLatitude(), data.get(position).getLongitude());
 
-        final CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(building)      // Sets the center of the map to Mountain View
-                .zoom(18)                   // Sets the zoom
-                .bearing(0)                // Sets the orientation of the camera to east
-                .tilt(0)                   // Sets the tilt of the camera to 30 degrees
-                .build();
-
+        final CameraPosition cameraPosition = campusMap.defaultCameraPosition(building);
           mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-        TileProvider tileProvider = new UrlTileProvider(256, 256) {
-            @Override
-            public URL getTileUrl(int x, int y, int zoom) {
+        TileProvider tileProvider = campusMap.getCampusMap();
 
-    /* Define the URL pattern for the tile images */
-                String s = String.format(" https://www.uea.ac.uk/ueaflatfiles/campusmap/%d/%d/%d.png",
-                        zoom, x, y);
-
-                if (!checkTileExists(x, y, zoom)) {
-                    return null;
-                }
-
-                try {
-                    return new URL(s);
-                } catch (MalformedURLException e) {
-                    throw new AssertionError(e);
-                }
-            }
-
-            /*
-             * Check that the tile server supports the requested x, y and zoom.
-             * Complete this stub according to the tile range you support.
-             * If you support a limited range of tiles at different zoom levels, then you
-             * need to define the supported x, y range at each zoom level.
-             */
-            private boolean checkTileExists(int x, int y, int zoom) {
-                int minZoom = 15;
-                int maxZoom = 21;
-
-                if ((zoom < minZoom || zoom > maxZoom)) {
-                    return false;
-                }
-
-                return true;
-            }
-        };
-
+        //overlays the uea campus map
         TileOverlay tileOverlay = mMap.addTileOverlay(new TileOverlayOptions()
                 .tileProvider(tileProvider));
 
         mMap.addMarker(new MarkerOptions().position(building).title(data.get(position).getName()));
-
         showall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +114,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         LatLng lt = new LatLng(data.get(i).getLatitude(), data.get(i).getLongitude());
 
                         mMap.addMarker(new MarkerOptions().position(lt).title(data.get(i).getName()));
-
+                        mMap.setMyLocationEnabled(true);
                     }
                 }else{
                     mMap.clear();

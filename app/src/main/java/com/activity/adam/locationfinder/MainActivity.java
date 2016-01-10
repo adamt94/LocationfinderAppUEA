@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
 
+
         //pass the assest file to database and get the location Data
         db = new Database(this,"uea-map-data.tsv");
         data = db.getData();
@@ -89,6 +91,16 @@ public class MainActivity extends AppCompatActivity implements  Serializable {
 
            }
        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MapData md = new MapData("MyLocation","My Location",0.0,0.0,"loc","null","Users Saved Location","ml","null","null");
+                data.add(0,md);
+                adapter.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, "Your Location has been saved",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
 
 
     }

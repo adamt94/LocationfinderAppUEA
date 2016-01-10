@@ -90,7 +90,6 @@ class CustomAdapter extends BaseAdapter implements framework.CustomAdapter{
 
         if (filter == null)
             filter = new FilteredData();
-        System.out.println("BANTER "+filter.toString());
         return filter;
     }
 

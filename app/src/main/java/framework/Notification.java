@@ -2,24 +2,15 @@ package framework;
 
 /**
  * Created by BEN on 17/12/2015.
+ *  use alarm manager TODO!
  */
 public interface Notification {
 
-    public void setSmallIcon(Image icon);
+    public void createNotification(int id, String title, String content);
 
-    public void setContentTitle(String content);
+    public void updateNotification(int id, String title, String content);
 
-    public void setContentText(String text);
-
-    public Image getSmallIcon();
-
-    public String getContentTitle();
-
-    public String getContentText();
-
-    public void cancel();
+    public void cancelNotificaiton(int id);
 
     public void cancelAll();
-
-    public void setAutoCancel();
 }
