@@ -25,12 +25,13 @@ public class AndroidGPS implements GPS {
     public AndroidGPS(Activity activity) {
         // Acquire a reference to the system Location Manager
         locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new AndroidLocationListener();
         this.activity = activity;
     }
 
     private class AndroidLocationListener implements LocationListener {
 
-        Location myLocation;
+        Location myLocation = new Location(LocationManager.GPS_PROVIDER);
 
         @Override
         public void onLocationChanged(Location location) {
@@ -52,7 +53,6 @@ public class AndroidGPS implements GPS {
 
     @Override
     public Location getLocation() {
-
         return locationListener.myLocation;
     }
 
@@ -64,7 +64,7 @@ public class AndroidGPS implements GPS {
                 Toast.makeText(activity, "Permission Not Granted", Toast.LENGTH_SHORT).show();
             } else {
                 locationManager.requestLocationUpdates(
-                        LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+                        LocationManager.GPS_PROVIDER, 50, 10, locationListener);
             }
         } else {
             Toast.makeText(activity, "GPS unavailable", Toast.LENGTH_SHORT).show();
