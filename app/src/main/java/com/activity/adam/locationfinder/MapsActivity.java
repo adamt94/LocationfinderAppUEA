@@ -95,7 +95,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         final LatLng building = new LatLng(data.get(position).getLatitude(), data.get(position).getLongitude());
-
+        //get own location
+        mMap.setMyLocationEnabled(true);
         final CameraPosition cameraPosition = campusMap.defaultCameraPosition(building);
           mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
@@ -114,7 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         LatLng lt = new LatLng(data.get(i).getLatitude(), data.get(i).getLongitude());
 
                         mMap.addMarker(new MarkerOptions().position(lt).title(data.get(i).getName()));
-                        mMap.setMyLocationEnabled(true);
+
                     }
                 }else{
                     mMap.clear();
@@ -123,6 +124,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+
 
     }
 
