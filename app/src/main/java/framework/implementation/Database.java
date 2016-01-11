@@ -1,49 +1,38 @@
 package framework.implementation;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import framework.FileIO;
-
 /**
  * Created by BEN on 17/12/2015.
  */
-public class Database  {
+public class Database {
     //contains all the data of uea locations,buildings etc
     private static ArrayList<MapData> data;
-    static InputStream stream;
-    static AndroidFileIO streams;
 
-    static String path;
     static BufferedReader reader;
 
-    public Database(Context context,String path){
-
-        this.path = path;
-        streams = new AndroidFileIO(context);
+    public Database(AssetManager am,String path){
         data = new ArrayList<>();
-        getinfo();
+        getinfo(am,path);
     }
 
     //reads all the data from excel
-    public static void getinfo(){
+    public static void getinfo(AssetManager am,String path){
         String line ="";
 
         try {
             //create file reader
 
-             stream = streams.readAsset(path);
-             reader = new BufferedReader(new InputStreamReader(stream));
+            InputStream stream = am.open(path);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
             //Read the CSV file header to skip it
             reader.readLine();
 
@@ -81,6 +70,5 @@ public class Database  {
     public void setData(ArrayList<MapData> data) {
         this.data = data;
     }
-
 
 }

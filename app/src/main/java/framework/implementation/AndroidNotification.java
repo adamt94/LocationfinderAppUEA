@@ -1,6 +1,9 @@
 package framework.implementation;
 
+import android.app.AlarmManager;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -11,7 +14,6 @@ import android.support.v4.app.NotificationCompat.Builder;
 import framework.Image;
 import framework.Notification;
 
-
 /**
  * Created by BEN on 17/12/2015.
  */
@@ -20,10 +22,6 @@ public class AndroidNotification implements Notification {
     private Builder builder;
     private NotificationManager manager;
     private Context context;
-    private int id;
-    private String contentTitle;
-    private String contentText;
-    private Image icon;
 
     public AndroidNotification(Context context) {
         this.context = context;
@@ -62,4 +60,31 @@ public class AndroidNotification implements Notification {
     public void cancelAll() {
         manager.cancelAll();
     }
+
+//    public void Remind (int time, String title, String message)
+//    {
+//        Intent alarmIntent = new Intent(context,AlarmReceiver);
+//        alarmIntent.putExtra("message", message);
+//        alarmIntent.putExtra("title", title);
+//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, "time", PendingIntent.getBroadcast(context,alarmIntent, PendingIntentFlags.UpdateCurrent));
+//
+//    }
+//
+//    public class AlarmReceiver extends BroadcastReceiver
+//    {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String message = intent.getStringExtra("message");
+//            String title = intent.getStringExtra("title");
+//            builder = new Builder(context);
+//            builder.setSmallIcon(android.support.v7.appcompat.R.drawable.notification_template_icon_bg);
+//            builder.setContentTitle(title);
+//            builder.setContentText(message);
+//            builder.setAutoCancel(true);
+//            builder.setCategory(NotificationCompat.CATEGORY_EVENT);
+//            Intent rIntent = new Intent();
+//            manager.notify(0,builder.build());
+//        }
+//    }
 }

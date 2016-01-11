@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements Serializable {
 
 
         //pass the assest file to database and get the location Data
-        db = new Database(this, "uea-map-data.tsv");
+        db = new Database(getAssets(), "uea-map-data.tsv");
         data = db.getData();
 
         //setup the listview and adapter

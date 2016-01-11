@@ -7,6 +7,7 @@ import android.widget.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import framework.implementation.MapData;
 
 /**
  * Created by adam on 07-Nov-15.

@@ -1,5 +1,7 @@
 package framework;
 
+import framework.implementation.Database;
+
 /**
  * Created by BEN on 17/12/2015.
  */
@@ -16,4 +18,6 @@ public interface App {
     public Notification getNotification();
 
     public GPS getGPS();
+
+    public Database getDatabase();
 }

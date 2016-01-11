@@ -42,7 +42,7 @@ public class Splash extends Activity {
         layout.setBackgroundColor(Color.parseColor("#303F9F"));
 
         vp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.MATCH_PARENT);
-       // vp.topMargin = 450;
+        // vp.topMargin = 450;
         iv.setLayoutParams(vp);
         vp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         vp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -54,15 +54,15 @@ public class Splash extends Activity {
         tv.setLayoutParams(vp);
 
         int resID = getResources().getIdentifier("uealogoalt", "drawable",  getPackageName());
-       // tv.setLayoutParams(vp);
+        // tv.setLayoutParams(vp);
         iv.setImageResource(resID);
 
 
 
         setContentView(layout);
-       // UEALogo = (ImageView)findViewById(R.id.imageView);
+        // UEALogo = (ImageView)findViewById(R.id.imageView);
 
-      //  UEALogo.setImageResource(resID);
+        //  UEALogo.setImageResource(resID);
 
         /* New Handler to start the Menu-Activity
          * and close this Splash-Screen after some seconds.*/
