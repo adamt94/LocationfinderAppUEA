@@ -58,8 +58,24 @@
         android:text="Opening Times"
         android:id="@+id/OpeningTimes"
         android:layout_margin="@dimen/text_margin"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/websiteLink"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/Type"
+        android:layout_margin="@dimen/text_margin"
+
+        android:text="Website Link"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/link"
+        android:layout_margin="@dimen/text_margin"
+        android:layout_below="@+id/websiteLink"/>
 
 
 </RelativeLayout>
+
 
 </android.support.v4.widget.NestedScrollView>

@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 public class Database {
     //contains all the data of uea locations,buildings etc
     private static ArrayList<MapData> data;
-
     static BufferedReader reader;
 
     public Database(AssetManager am,String path){
