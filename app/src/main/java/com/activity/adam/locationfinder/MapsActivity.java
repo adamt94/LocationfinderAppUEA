@@ -50,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        data = MainActivity.db.getData();
+        data = MainActivity.app.getDatabase().getData();
         campusMap = new CampusMap();
 
         Intent in = getIntent();

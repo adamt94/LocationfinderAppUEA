@@ -41,6 +41,7 @@ public class AndroidApp implements App{
     private Database database;
     private PowerManager.WakeLock wakeLock;
 
+
     public AndroidApp(Activity activity) {
         this.activity = activity;
         graphics = new AndroidGraphics(activity.getAssets(), Bitmap.createBitmap(480,800, Bitmap.Config.RGB_565));
@@ -49,7 +50,7 @@ public class AndroidApp implements App{
         fileIO = new AndroidFileIO(activity);
         notification = new AndroidNotification(activity);
         gps = new AndroidGPS(activity);
-        database = new Database(activity.getAssets(),"");
+        database = new Database(activity.getAssets(),"uea-map-data.tsv");
         PowerManager powerManager = (PowerManager) activity.getSystemService(activity.getApplicationContext().POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "MyGame");
     }

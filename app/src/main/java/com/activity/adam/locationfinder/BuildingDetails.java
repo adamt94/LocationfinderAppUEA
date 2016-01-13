@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import framework.implementation.MapData;
 
 public class BuildingDetails extends AppCompatActivity {
-    TextView description,name,abbr,type,opentimes;
+    TextView description,name,abbr,type,opentimes,Websitelink;
     FloatingActionButton mapview;
     int position;
     ArrayList<MapData> md;
@@ -29,7 +29,7 @@ public class BuildingDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         //get the map data
-        md= MainActivity.db.getData();
+        md= MainActivity.app.getDatabase().getData();
 
         super.onCreate(savedInstanceState);
         Intent in = getIntent();
@@ -47,6 +47,7 @@ public class BuildingDetails extends AppCompatActivity {
         type = (TextView) findViewById(R.id.Type);
         opentimes = (TextView) findViewById(R.id.OpeningTimes);
         mapview = (FloatingActionButton) findViewById(R.id.fab);
+        Websitelink = (TextView) findViewById(R.id.websiteLink);
         //set the title
         setTitle(md.get(position).getName());
 
@@ -77,7 +78,9 @@ public class BuildingDetails extends AppCompatActivity {
         }
 
         type.setText(Html.fromHtml("<b>" + "Type" + "</b>" + "<br/>" + md.get(position).getType()));
-
+        if(!md.get(position).getLink().contains("null")) {
+            Websitelink.setText(Html.fromHtml("<b>" + "Website Link" + "</b>" + "<br/>" + md.get(position).getLink()));
+        }
         //user clicks the mapview button
         mapview.setOnClickListener(new View.OnClickListener() {
             @Override

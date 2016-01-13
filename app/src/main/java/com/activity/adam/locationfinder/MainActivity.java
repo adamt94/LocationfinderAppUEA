@@ -66,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         app = new AndroidApp(this);
         //enable gps
         app.getGPS().enableLocation();
-
+        //setup database
+        data = app.getDatabase().getData();
 
         //pass the assest file to database and get the location Data
         db = new Database(getAssets(), "uea-map-data.tsv");
