@@ -2,7 +2,7 @@ package framework;
 
 /**
  * Created by BEN on 17/12/2015.
- *  use alarm manager TODO!
+ * Interface for setting/updating/canceling notifications
  */
 public interface Notification {
 
@@ -13,4 +13,6 @@ public interface Notification {
     public void cancelNotificaiton(int id);
 
     public void cancelAll();
+
+    public void remind(int time, String title, String message);
 }

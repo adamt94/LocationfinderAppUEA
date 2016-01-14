@@ -6,12 +6,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
+import android.content.IntentFilter;
+import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 
-
-import framework.Image;
 import framework.Notification;
 
 /**
@@ -36,6 +35,8 @@ public class AndroidNotification implements Notification {
         builder.setContentText(content);
         builder.setAutoCancel(true);
         builder.setCategory(NotificationCompat.CATEGORY_EVENT);
+        builder.setDefaults(android.app.Notification.DEFAULT_SOUND);
+        builder.setDefaults(android.app.Notification.DEFAULT_VIBRATE);
         Intent rIntent = new Intent();
         manager.notify(id,builder.build());
     }
@@ -46,6 +47,8 @@ public class AndroidNotification implements Notification {
         builder.setSmallIcon(android.support.v7.appcompat.R.drawable.notification_template_icon_bg);
         if(title != null) builder.setContentTitle(title);
         if(title != null)builder.setContentText(content);
+        builder.setDefaults(android.app.Notification.DEFAULT_SOUND);
+        builder.setDefaults(android.app.Notification.DEFAULT_VIBRATE);
         builder.setAutoCancel(true);
         Intent rIntent = new Intent();
         manager.notify(id,builder.build());
@@ -61,30 +64,34 @@ public class AndroidNotification implements Notification {
         manager.cancelAll();
     }
 
-//    public void Remind (int time, String title, String message)
-//    {
-//        Intent alarmIntent = new Intent(context,AlarmReceiver);
-//        alarmIntent.putExtra("message", message);
-//        alarmIntent.putExtra("title", title);
-//        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, "time", PendingIntent.getBroadcast(context,alarmIntent, PendingIntentFlags.UpdateCurrent));
-//
-//    }
-//
-//    public class AlarmReceiver extends BroadcastReceiver
-//    {
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            String message = intent.getStringExtra("message");
-//            String title = intent.getStringExtra("title");
-//            builder = new Builder(context);
-//            builder.setSmallIcon(android.support.v7.appcompat.R.drawable.notification_template_icon_bg);
-//            builder.setContentTitle(title);
-//            builder.setContentText(message);
-//            builder.setAutoCancel(true);
-//            builder.setCategory(NotificationCompat.CATEGORY_EVENT);
-//            Intent rIntent = new Intent();
-//            manager.notify(0,builder.build());
-//        }
-//    }
+    @Override
+    public void remind (int time, String title, String message)
+    {
+        AlarmReceiver rec = new AlarmReceiver();
+        context.registerReceiver(rec, new IntentFilter("alarmReciever"));
+        Intent alarmIntent = new Intent("alarmReciever");
+        alarmIntent.putExtra("message", message);
+        alarmIntent.putExtra("title", title);
+        PendingIntent pintent = PendingIntent.getBroadcast(context,0,alarmIntent,0);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+time, pintent);
+    }
+
+    public class AlarmReceiver extends BroadcastReceiver
+    {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            String title = intent.getStringExtra("title");
+            builder = new Builder(context);
+            builder.setSmallIcon(android.support.v7.appcompat.R.drawable.notification_template_icon_bg);
+            builder.setContentTitle(title);
+            builder.setContentText(message);
+            builder.setAutoCancel(true);
+            builder.setCategory(NotificationCompat.CATEGORY_EVENT);
+            builder.setDefaults(android.app.Notification.DEFAULT_SOUND);
+            builder.setDefaults(android.app.Notification.DEFAULT_VIBRATE);
+            manager.notify(0, builder.build());
+        }
+    }
 }
