@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
@@ -22,9 +23,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsoluteLayout;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,12 +74,12 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         data = app.getDatabase().getData();
 
         //pass the assest file to database and get the location Data
-        db = new Database(getAssets(), "uea-map-data.tsv");
-        data = db.getData();
+
+        data = app.getDatabase().getData();
 
         //setup the listview and adapter
         locationList = (ListView) findViewById(R.id.locations);
-        adapter = new CustomAdapter(db.getData(), this);
+        adapter = new CustomAdapter(data, this);
         locationList.setAdapter(adapter);
 
         //create on click for list view
@@ -150,11 +154,44 @@ public class MainActivity extends AppCompatActivity implements Serializable {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            final AlertDialog.Builder inputAlert = new AlertDialog.Builder(context);
+            inputAlert.setTitle("Settings");
+
+
+            inputAlert.setPositiveButton("Delete Saved Locations", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                   for(int i =0; i< data.size(); i++)
+                   {
+                       if(data.get(i).getType().equals("Custom Location"))
+                       {
+                           data.remove(i);
+                           i--;
+                       }
+                   }
+                    adapter.notifyDataSetChanged();
+                }
+            });
+            inputAlert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alertDialog = inputAlert.create();
+            alertDialog.show();
         }
+
+
+
+
+
+
+
+
+
+
         if (id == R.id.search) {
             //adds a textview dynamically
             RelativeLayout.LayoutParams lparams = new RelativeLayout.LayoutParams(
