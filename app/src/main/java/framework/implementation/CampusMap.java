@@ -35,7 +35,7 @@ public class CampusMap {
             public URL getTileUrl(int x, int y, int zoom) {
 
     /* Define the URL pattern for the tile images */
-                String s = String.format(" https://www.uea.ac.uk/ueaflatfiles/campusmap/%d/%d/%d.png",
+                String s = String.format("https://www.uea.ac.uk/ueaflatfiles/campusmap/%d/%d/%d.png",
                         zoom, x, y);
 
                 if (!checkTileExists(x, y, zoom)) {

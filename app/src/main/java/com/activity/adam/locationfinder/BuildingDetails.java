@@ -3,6 +3,7 @@ package com.activity.adam.locationfinder;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ public class BuildingDetails extends AppCompatActivity {
     FloatingActionButton mapview;
     int position;
     ArrayList<MapData> md;
+    CollapsingToolbarLayout ctbl;
 
 
     @Override
@@ -46,10 +48,32 @@ public class BuildingDetails extends AppCompatActivity {
         abbr = (TextView) findViewById(R.id.Abbrivation);
         type = (TextView) findViewById(R.id.Type);
         opentimes = (TextView) findViewById(R.id.OpeningTimes);
+        ctbl = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         mapview = (FloatingActionButton) findViewById(R.id.fab);
         Websitelink = (TextView) findViewById(R.id.websiteLink);
         //set the title
         setTitle(md.get(position).getName());
+        if(MainActivity.app.getDatabase().getData().get(position).getAbbr().equals("BIO"))
+        {
+
+            ctbl.setBackgroundResource(R.drawable.bio);
+        }
+        if(MainActivity.app.getDatabase().getData().get(position).getAbbr().equals("HIS"))
+        {
+            ctbl.setBackgroundResource(R.drawable.his);
+        }
+        if(MainActivity.app.getDatabase().getData().get(position).getAbbr().equals("NBS"))
+        {
+            ctbl.setBackgroundResource(R.drawable.nbs);
+        }
+        if(MainActivity.app.getDatabase().getData().get(position).getAbbr().equals("PHA"))
+        {
+            ctbl.setBackgroundResource(R.drawable.pha);
+        }
+        if(MainActivity.app.getDatabase().getData().get(position).getAbbr().equals("MED"))
+        {
+            ctbl.setBackgroundResource(R.drawable.med);
+        }
 
 
         if (!md.get(position).getDescription().contains("null")){
@@ -79,7 +103,8 @@ public class BuildingDetails extends AppCompatActivity {
 
         type.setText(Html.fromHtml("<b>" + "Type" + "</b>" + "<br/>" + md.get(position).getType()));
         if(!md.get(position).getLink().contains("null")) {
-            Websitelink.setText(Html.fromHtml("<b>" + "Website Link" + "</b>" + "<br/>" + md.get(position).getLink()));
+            Websitelink.setText(Html.fromHtml("<b>" + "Website Link" + "</b>" + "<br/>" +"<a href=\""+ md.get(position).getLink() + "\">" + md.get(position).getLink() + "</a>"));
+            Websitelink.setMovementMethod(LinkMovementMethod.getInstance());
         }
         //user clicks the mapview button
         mapview.setOnClickListener(new View.OnClickListener() {
